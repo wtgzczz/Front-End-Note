@@ -66,13 +66,13 @@ B.prototype.sayAge = function(){
 	alert(this.age);
 }
 
-var b1 = new B('tong',21);
+var b1 = new B('tong',20);
 b1.colors.push('black');
 alert(b1.colors);
 b1.sayName();
 b1.sayAge();
 
-var b2 = new B('ton',20);
+var b2 = new B('ton',21);
 alert(b2.colors);
 b2.sayName();
 b2.sayAge();
@@ -109,3 +109,24 @@ var obj = {
 };
 var obj2 = createSubObj(obj);
 obj2.say();
+
+/*寄生组合式继承*/
+function A(name){
+	this.name = name;
+	this.colors = ['red','blue','green'];
+}
+A.prototype.sayName = function(){
+	alert(this.name);
+}
+function B(name,age){
+	A.call(this,name);
+	this.age = age;
+}
+B.prototype = Object.create(A.prototype);
+B.prototype.sayAge = function(){
+	alert(this.age);
+}
+var b1 = new B('tong',20);
+b1.sayName();
+b1.sayAge();
+b1.colors;
