@@ -130,3 +130,12 @@ var b1 = new B('tong',20);
 b1.sayName();
 b1.sayAge();
 b1.colors;
+
+
+/*链式调用*/
+function A(){};
+A.prototype.x = function(index){
+    return this;                //返回实例
+}
+var a = new A();
+a.x(1).x(2).x(3);
