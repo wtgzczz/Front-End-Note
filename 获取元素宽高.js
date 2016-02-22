@@ -1,4 +1,4 @@
-/*获取元素宽高*/
+﻿/*获取元素宽高*/
 var p =document.getElementById('parent');
 console.log(p.offsetWidth);       
 console.log(p.offsetHeight);
