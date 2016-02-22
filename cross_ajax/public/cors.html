@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CORS</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>CORS原理</h3>
+
+<p>xhr level2 支持的新标准，允许发起ajax请求</p>
+
+<p>但是为了跨域安全，需要在服务器响应头部提供一些信息，供浏览器校验请求是否被允许</p>
+<p><b>Access-Control-Allow-Origin</b></p>
+<p><b>Access-Control-Allow-Methods</b></p>
+<p><b>Access-Control-Allow-Headers</b></p>
+<button class="btn btn-primary btn-sm" onclick="crossAjax();">CORS TEST</button>
+
+<hr/>
+<h3>CORS头信息通用设置方法</h3>
+<p><a target="_blank" href='http://enable-cors.org/server.html'>http://enable-cors.org/server.html</a></p>
+<script>
+function crossAjax() {
+    $.ajax('http://b.test.com/test', {
+        type: 'PUT',
+        headers: {test: 'haha'}
+    }).done(function(data) {
+        alert(data);
+    });
+}
+</script>
+</body>
+</html>

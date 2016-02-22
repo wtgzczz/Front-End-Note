@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>jsonp原理</h3>
+
+<p>本质并不是ajax，只是执行了跨域js</p>
+
+<p>html中，所有带src属性的标签都可以跨域,script img iframe</p>
+
+<p>所以，可以通过script加载其它域的一段动态脚本，这段脚本包含了想要的数据信息</p>
+
+<hr/>
+
+<script>
+function callback(data) {
+    console.log( data);
+}
+</script>
+<script src="http://b.test.com/testjsonp"></script>
+</body>
+</html>

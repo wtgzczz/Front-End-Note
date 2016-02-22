@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<h3>jsonp实现</h3>
+
+<p>动态生成script</p>
+
+<button class="btn btn-primary btn-sm" onclick="calltest();">调用测试</button>
+
+<hr/>
+<h3>jquery对jsonp的支持</h3>
+<p>getJSON(url, data, callback);</p>
+<button class="btn btn-primary btn-sm" onclick="testGetJson();">test getJSON</button>
+<p>ajax指定返回jsonp类型</p>
+<button class="btn btn-primary btn-sm" onclick="testAjaxJsonp();">test ajax jsonp</button>
+<p>jsonp jsonpCallback 参数</p>
+<button class="btn btn-primary btn-sm" onclick="testArgs();">test args</button>
+
+<hr/>
+<h3>jsonp缺点</h3>
+<p>只支持get方式</p>
+<p>后端代码要调整</p>
+<script>
+    function jsonp(url, data, callback) {
+        var script = document.createElement('script');
+        document.body.appendChild(script);
+
+        data = data || {};
+        data.callback = 'cb' + new Date().getTime();
+        window[data.callback] = callback;
+
+        url += '?' + $.param(data);
+
+        script.src = url;
+        script.onload = function () {
+            document.body.removeChild(script);
+        }
+
+    }
+
+    function calltest() {
+        jsonp('http://b.test.com/testjsonp2', {test: 'ok'}, function (data) {
+            console.log(data);
+        });
+    }
+
+    function testGetJson() {
+        $.getJSON('http://b.test.com/testjsonp2?callback=?', {test: 'ok'}, function(data) {
+           console.log(data);
+        });
+    }
+
+    function testAjaxJsonp() {
+        $.ajax('http://b.test.com/testjsonp2?callback=?', {
+            dataType: 'jsonp'
+        }).done(function(data) {
+            console.log(data);
+        });
+    }
+
+    function testArgs() {
+        $.ajax('http://b.test.com/testjsonp3', {
+            dataType: 'jsonp',
+            jsonp: 'cbname',
+            jsonpCallback: 'cbfun',
+            cache: true,
+            success: function(data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>

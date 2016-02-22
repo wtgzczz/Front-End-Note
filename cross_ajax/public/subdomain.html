@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sub domain</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/jquery-1.11.3.js"></script>
+</head>
+<body>
+    <h3>设置跨域模拟环境</h3>
+    <p>修改C:\Windows\System32\drivers\etc\hosts文件：DNS解析过程 hosts -> DNS Server</p>
+    <hr />
+    <h3>跨域限制</h3>
+    <button class="btn btn-primary btn-sm" onclick="crossAjax();">跨域请求</button>
+    <hr />
+    <h3>跨子域ajax</h3>
+    <p>ajax不允许跨子域，但iframe可以，通过iframe协助完成跨子域操作</p>
+    <iframe id="bfrm" style="display:none;" src="http://b.test.com/cross_sub_domain.html"></iframe>
+    <button class="btn-sm btn btn-primary" onclick="crossSubDomain();">跨子域请求</button>
+    <hr />
+<script>
+    function crossAjax() {
+         var url = 'http://b.test.com/test';
+        // var url = '/test';
+        $.ajax(url).done(function(data) {
+            alert(data);
+        }).fail(function() {
+            alert('请求失败');
+        });
+    }
+
+    function crossSubDomain() {
+        document.domain = 'test.com'; // 提升域
+        window.frames['bfrm'].contentWindow.doAjax(function(data) {
+            alert(data);
+        });
+    }
+</script>
+</body>
+</html>
