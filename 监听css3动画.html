@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			@-webkit-keyframes move{
+				from{
+					background: red;
+				}
+				to{
+					background: green;
+				}
+			}
+			#div{
+				width: 200px;
+				height: 200px;
+				background: green;
+				animation:  move 3s infinite ;
+			}
+		</style>
+	</head>
+	<body>
+		
+		
+		<div id="div"></div> 
+		<script type="text/javascript"> 
+			var tt = document.querySelector('#div'); 
+			    /*开始事件 webkitAnimationStart 
+				 *结束事件 webkitAnimationEnd 
+				 *重复运动事件 webkitAnimationIteration*/
+				tt.addEventListener("webkitAnimationEnd", function(){ //动画结束时事件 
+					this.className = this.className.replace('change', ' '); 
+					console.log('动画执行完毕'); 
+				}, false); 
+				tt.addEventListener("webkitAnimationIteration", function(){ //动画结束时事件 
+					console.log('动画重复执行'); 
+				}, false); 
+		</script> 
+	</body>
+</html>
