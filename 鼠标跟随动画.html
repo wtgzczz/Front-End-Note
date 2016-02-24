@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .gallery {
+            display: flex;
+        }
+        .gallery li {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            background-color: red;
+            list-style: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .shadow {
+            position: absolute;
+            background-color: yellow;
+            width: 100px;
+            height: 100px;
+            opacity: 0.6;
+            transform: translate(100px, 0) translateZ(0);
+        }
+        .animate {
+            transition: transform 300ms ease;
+        }
+    </style>
+</head>
+<body>
+<ul class="gallery">
+    <li>
+        <div class="shadow animate"></div>
+    </li>
+    <li>
+        <div class="shadow animate"></div>
+    </li>
+    <li>
+        <div class="shadow animate"></div>
+    </li>
+    <li>
+        <div class="shadow animate"></div>
+    </li>
+</ul>
+<script>
+        var transCss = ['translate(0, -100px) translateZ(0)',  //上
+                'translate(100px, 0) translateZ(0)',     //右
+                'translate(0, 100px) translateZ(0)',     //下
+                'translate(-100px, 0) translateZ(0)',    //左
+                'translate(0, 0) translateZ(0)'],   //默认
+            timer,
+            lis = document.querySelectorAll('.gallery li');
+          for(var i = 0,len = lis.length;i<len;i++){
+          	lis[i].addEventListener('mouseenter',function(event){
+          		move(event,'enter');
+          	},false);
+          	lis[i].addEventListener('mouseleave',function(event){
+          		move(event,'leave');
+          	},false);
+          }
+        function move(event,type){
+       		var ev = event,
+       		    target = ev.target,
+       		    shadow = target.children[0],
+       	   	    x = ev.pageX - target.offsetLeft - 50, y = ev.pageY - target.offsetTop - 50,
+       		    direc = Math.round((((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90) + 3) % 4;
+	       		console.log(direc);
+	       		shadow.style.transform = transCss[direc];
+	       		clearTimeout(timer);
+	       		if(type == 'enter'){
+	       			timer = setTimeout(function(){
+	       				shadow.style.transform = transCss[4];
+	       			},10);	
+	       		}
+           }
+</script>
+</body>
+</html>
