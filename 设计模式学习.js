@@ -104,3 +104,34 @@ function singleProxy(fn){
         return alreadyOnce || (alreadyOnce = new fn(name));
     }
 }
+/*工厂模式*/
+/*总结：本例中子构造函数作为构造函数的静态方法保存，你也可以寻求别的实现
+（例如：将工厂抽象成一个类，在工厂实例上调用.create()方法来构造对象。
+该方法根据参数来调用其它构造函数）。调用构造函数时，根据传入的参数调用
+指定的子构造函数。其中，子构造函数继承自构造函数。
+
+使用场合：需要使用同一接口构造不同类型的对象。这些不同类对象之间的差异较
+小，可以通过继承来进行代码复用。普遍性的功能放在父类构造函数中，特殊的功能放在子类构造函数中。*/
+function CarMaker(){};
+CarMaker.prototype.drive = function(){
+    return 'I have'+ this.doors + 'doors';
+};
+CarMaker.factory = function(type){
+    var newcar;
+    if(typeof CarMaker[type] !=='function'){
+        throw Error('不存在这个工厂函数.');
+    }
+    if(typeof CarMaker[type].prototype.driver !== 'function'){
+        CarMaker[type].prototype = new CarMaker();
+    }
+    newcar = new CarMaker[type]();
+    return newcar;
+};
+CarMaker.smallCar = function(){
+    this.doors = 4;
+};
+CarMaker.bigCar = function(){
+    this.doors = 8;
+};
+var suv = carMaker.factory('bigCar');
+suv.drive(); //8
