@@ -135,3 +135,92 @@ CarMaker.bigCar = function(){
 };
 var suv = carMaker.factory('bigCar');
 suv.drive(); //8
+
+/*迭代器模式*/
+var iterater = (function(){
+    var index = 0,
+        data = [1,2,3,4,5];
+    return {
+        hasNext:function(){
+            return index<data.length;
+        },
+        next:function(){
+            if(!this.hasNext()){ //this指向{};
+                return null;
+            }
+            return data[index++]
+        },
+        current:function(){
+            return data[index];
+        },
+        reset:function(){
+            index = 0;
+        }
+    }; /*返回迭代器对象*/
+}());
+
+/*装饰者模式 一个对象可以随时通过调用一个方法对自身进行“装饰”（获得新方法，或更新原有方法的行为。
+这些新方法被放在“装饰池”中备用）。这样就避免了定义大量的类，也使得一个对象非常灵活。*/
+function MagicGirl(skill){
+    this.skill = skill;
+    this.typeList = [];
+}
+MagicGirl.prototype.transform = function(type){
+    this.typeList.push(type);
+};
+MagicGirl.prototype.attack = function(){
+    var skill = this.skill,
+        myRealPower = 'a common attack',
+        typename;
+    for(var  i = 0;i<this.typeList.length;i++){
+        typename = this.typeList[i];
+        myRealPower = MagicGirl.types[typename].attack(skill);
+    }
+    return myRealPower;
+};
+MagicGirl.types = {};
+MagicGirl.types.madoka = {
+    attack:function(skill){
+        return 'that\'s definitively queer, take my' + skill;
+    }
+};
+MagicGirl.types.homura = {
+    attack: function(skill) {
+        return 'The world! take my ' + skill;
+    }
+};
+
+MagicGirl.types.nanoha = {
+    attack: function (skill) {
+        return 'You must calm down!, take my ' + skill;
+    }
+};
+var girlA = new MagicGirl('Starlight Breaker');
+girlA.attack(); //'a common attack'
+girlA.transform('nanoha');
+girlA.attack(); //'You must calm down! take my Starlight Breaker'
+
+/*策略模式*/
+var validator = {
+    validatingRules:{
+
+    },
+    config:{
+
+    },
+    validate:function(data){
+        /*接收一个JSON对象，根据config对象调用this.validatingRules内的算法逐属性验证
+        一些错误情况的处理
+        此处省略具体实现*/
+    }//最重要的接口。统一调用这个接口进行验证
+};
+// 使用时
+validator.config = {
+    email: 'isEmail',
+    phone: 'isPhoneNumber'
+}; // 配置验证规则
+
+validator.validate({
+    emali: 'cyl@front.dog',
+    phone: '11111111'
+}); //调用validator对象验证数据
