@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>无标题文档</title>
+<style>
+*{ margin:0; padding:0;}
+li{ list-style:none;}
+#ul1{ margin:20px auto; border:1px #FFF solid; border-bottom:none; border-right:none; overflow:hidden; background-image:url(img/bg.jpg); background-size:cover;}
+#ul1 li{ float:left; border:1px #FFF solid; border-top:none; border-left:none; background-size:cover;}
+#ul1 li.active{ animation:0.5s linear infinite flash; -webkit-animation:0.5s linear infinite flash;}
+@keyframes flash{
+	0%{ opacity:0.1;}
+	50%{ opacity:1;}
+	100%{ opacity:0.1;}
+}
+@-webkit-keyframes flash{
+	0%{ opacity:0.1;}
+	50%{ opacity:1;}
+	100%{ opacity:0.1;}
+}
+</style>
+</head>
+
+<body>
+<ul id="ul1">
+</ul>
+<script>
+
+var oUl = document.getElementById('ul1');
+var aLi = oUl.getElementsByTagName('li');
+var size = 8;
+var len = size * size;
+var sizeGird = 50;
+var row = 0;
+var col = 0;
+var min = 0;
+var max = size - 1;
+var arr = [];
+var bgArr = [];
+
+oUl.style.width = size * (sizeGird + 1) + 'px';
+
+for(var i=0;i<len;i++){
+	var oLi = document.createElement('li');
+	oLi.style.width = sizeGird + 'px';
+	oLi.style.height = sizeGird + 'px';
+	oUl.appendChild(oLi);
+}
+for(var i=0;i<len;i++){
+	//aLi[ row * size + col ].innerHTML = i;
+	arr.push( aLi[ row * size + col ] );
+	if( row == min && col < max ){
+		col = col + 1;
+	}
+	else if( col == max && row < max ){
+		row = row + 1;
+	}
+	else if( row == max && col > min ){
+		col = col - 1;
+	}
+	else if( col == min && row > min ){
+		row = row - 1;
+	}
+	if( row - 1 == min && col == min ){
+		min = min + 1;
+		max = max - 1;
+	}
+}
+
+/*var iNow = 0;
+setInterval(function(){
+	
+	for(var i=0;i<aLi.length;i++){
+		aLi[i].style.backgroundImage = '';
+	}
+	
+	arr[iNow].style.backgroundImage = 'url(img/1.jpg)';
+	iNow++;
+	
+},200);*/
+
+for(var i=0;i<aLi.length;i++){
+	if(i%5==0){
+		var bgImage = 'url(img/'+ ( Math.floor(Math.random()*11+1) ) +'.jpg)';
+		arr[i].style.backgroundImage = bgImage;
+		bgArr.push([i,bgImage]);
+	}
+}
+
+run();
+setInterval(run,1000);
+
+function run(){
+	
+	for(var i=0;i<aLi.length;i++){
+		aLi[i].style.backgroundImage = '';
+		aLi[i].className = '';
+	}
+	
+	for(var i=0;i<bgArr.length;i++){
+		
+		bgArr[i][0] = bgArr[i][0] + 1;
+		
+		if(arr[ bgArr[i][0] ]){
+			arr[ bgArr[i][0] ].style.backgroundImage = bgArr[i][1];
+			arr[ bgArr[i][0] ].className = 'active';
+			arr[ bgArr[i][0] ].style.animationDelay = -Math.random()*2 + 's';
+			arr[ bgArr[i][0] ].style.webkitAnimationDelay = -Math.random()*2 + 's';
+		}
+		else{
+			bgArr.pop();
+			var bgImage = 'url(img/'+ ( Math.floor(Math.random()*11+1) ) +'.jpg)';
+			bgArr.unshift([0,bgImage]);
+		}
+		
+	}
+	
+}
+
+</script>
+</body>
+</html>
