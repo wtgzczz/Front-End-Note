@@ -248,6 +248,10 @@ set.remove(2);
 console.log(set.values()); //输出[]
 
 /*排序算法 快速排序*/
+/*
+把一个数组以数组中的某个值为标记。比这个值小的放到数组的左边，比这个值得大的放到数组的右边。
+然后再递归 对左边和右边的数组进行同样的操作。
+*/
 function quickSort(arr){
 	/*跳出递归的条件*/
 	if(arr.length<=1){
@@ -286,6 +290,20 @@ function bubblSort(arr){
 	}
 	return arr;   //返回数组
 }
+/*
+排序数组：var a = [9,8,7,6,5,4,3,2,1,0];
+排序过程：
+[8, 7, 6, 5, 4, 3, 2, 1, 0,  9]
+[7, 6, 5, 4, 3, 2, 1, 0,  8, 9]
+[6, 5, 4, 3, 2, 1, 0,  7, 8, 9]
+[5, 4, 3, 2, 1, 0,  6, 7, 8, 9]
+[4, 3, 2, 1, 0,  5, 6, 7, 8, 9]
+[3, 2, 1, 0,  4, 5, 6, 7, 8, 9]
+[2, 1, 0,  3, 4, 5, 6, 7, 8, 9]
+[1, 0,  2, 3, 4, 5, 6, 7, 8, 9]
+[0,  1, 2, 3, 4, 5, 6, 7, 8, 9]
+*/
+
 /*选择排序 范围从整个数组逐次缩小，将第一个数假设为最小，依次和后面比对，将最小的数和此数交换*/
 function selectionSort(arr){
 	var swap = function(index1,index2){     //通过位置下标交换值
@@ -307,6 +325,21 @@ function selectionSort(arr){
 			}
 		}
 }
+/*
+左边为有序数组，右边为无序数组
+排序过程：
+[0,    8, 7, 6, 5, 4, 3, 2, 1, 9]
+[0, 1,    7, 6, 5, 4, 3, 2, 8, 9]
+[0, 1, 2,    6, 5, 4, 3, 7, 8, 9]
+[0, 1, 2, 3,    5, 4, 6, 7, 8, 9]
+[0, 1, 2, 3, 4,    5, 6, 7, 8, 9]
+[0, 1, 2, 3, 4, 5,    6, 7, 8, 9]
+[0, 1, 2, 3, 4, 5, 6,    7, 8, 9]
+[0, 1, 2, 3, 4, 5, 6, 7,    8, 9]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+*/
+
+
 /*插入排序 把前面的数看作已排好的数，将后面的数挨个与比对，将最小的插入到最前面*/
 function insertionSort(arr){
 	var length = arr.length,
@@ -321,3 +354,85 @@ function insertionSort(arr){
 			arr[j] = temp;
 		}    
 }
+/*
+左边为有序数组，右边为无序数组。每一轮排序都将无序数组的第一位与有序数组中的值对比，插入到有序数组中合适的位置。
+排序过程：
+[8, 9,    7, 6, 5, 4, 3, 2, 1, 0]
+[7, 8, 9,    6, 5, 4, 3, 2, 1, 0]
+[6, 7, 8, 9,    5, 4, 3, 2, 1, 0]
+[5, 6, 7, 8, 9,    4, 3, 2, 1, 0]
+[4, 5, 6, 7, 8, 9,    3, 2, 1, 0]
+[3, 4, 5, 6, 7, 8, 9,    2, 1, 0]
+[2, 3, 4, 5, 6, 7, 8, 9,    1, 0]
+[1, 2, 3, 4, 5, 6, 7, 8, 9,    0]
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+*/
+
+/*归并排序
+把一系列排好序的子序列合并成一个大的完整有序序列。
+从最小的单位开始合并。然后再逐步合并合并好的有序数组。最终实现归并排序。 
+*/
+function mergeSort(arr){  
+    var len= arr.length,arrleft=[],arrright =[],gap=1,maxgap=len-1,gapArr=[],glen,n=0;  
+    while(gap<maxgap){  
+        gap = Math.pow(2,n);  
+        if(gap<=maxgap){  
+            gapArr.push(gap);  
+        }  
+        n++;  
+    }  
+    glen = gapArr.length;  
+    for (var i = 0; i < glen; i++) {  
+        gap = gapArr[i];  
+        for (var j = 0; j < len; j=j+gap*2) {  
+            arrleft = arr.slice(j, j+gap);  
+            arrright = arr.slice(j+gap,j+gap*2);  
+            console.log("left:"+arrleft,"right:"+arrright);  
+            arr = arr.slice(0,j).concat(subSort(arrleft,arrright),arr.slice(j+gap*2));  
+        }  
+    }  
+    return arr;  
+}  
+function subSort(arr1,arr2){  
+  
+    var len1 = arr1.length,len2 = arr2.length,i=0,j=0,arr3=[],bArr1 = arr1.slice(),bArr2 = arr2.slice();  
+  
+    while(bArr1.length!=0 || bArr2.length!=0){  
+        if(bArr1.length == 0){  
+            arr3 = arr3.concat(bArr2);  
+            bArr2.length = 0;  
+        }else if(bArr2.length == 0){  
+            arr3 = arr3.concat(bArr1);  
+            bArr1.length = 0;  
+        }else{  
+            if(bArr1[0]<=bArr2[0]){  
+                arr3.push(bArr1[0]);  
+                bArr1.shift();  
+            }else{  
+                arr3.push(bArr2[0]);  
+                bArr2.shift();  
+            }  
+        }  
+    }  
+    return arr3;  
+}  
+
+/*
+排序[4,2,6,3,1,9,5,7,8,0]
+
+第一轮先依次合并相邻元素：4,2;  6,3; 1,9; 5,7; 8,0
+
+合并完成之后变成： [2,4,3,6,1,9,5,7,0,8]
+
+第二轮以2个元素为一个单位进行合并：[2,4],[3,6];    [1,9],[5,7];    [0,8],[];
+
+合并完成之后变成：[2,3,4,6,1,5,7,9,0,8]
+
+第三轮以4个元素为一个单位进行合并：[2,3,4,6],[1,5,7,9];  [0,8],[]
+
+合并完成之后变成： [1,2,3,4,5,6,7,9,0,8];
+
+第四轮以8个元素为一个单位进行合并： [1,2,3,4,5,6,7,9],[0,8];
+
+合并完成。 [0,1,2,3,4,5,6,7,8,9];
+*/
