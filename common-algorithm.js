@@ -247,6 +247,62 @@ console.log(set.values()); //输出["2"]
 set.remove(2);
 console.log(set.values()); //输出[]
 
+/*二叉树*/
+
+//广度优先遍历（非递归）
+var levelOrderTraversal = function(node) {
+	if(!node) {
+		throw new Error('Empty Tree')
+	}
+	var que = []  //队列
+	que.push(node)
+	while(que.length !== 0) {
+		node = que.shift()
+		console.log(node.value)
+		if(node.left) que.push(node.left)
+		if(node.right) que.push(node.right)
+	}
+}
+
+//深度优先遍历（递归）
+//先序
+var preOrder = function (node) {
+	if (node) {
+		console.log(node.value);
+		preOrder(node.left);
+		preOrder(node.right);
+	}
+}
+//中序
+var inOrder = function (node) {
+	if (node) {
+		inOrder(node.left);
+		console.log(node.value);
+		inOrder(node.right);
+	}
+//后序
+	var postOrder = function (node) {
+		if (node) {
+			postOrder(node.left);
+			postOrder(node.right);
+			console.log(node.value);
+		}
+	}
+//深度优先遍历（非递归）
+var preOrderUnRecur = function(node) {
+	if(!node) {
+		throw new Error('Empty Tree')
+	}
+	var stack = []  //栈
+	stack.push(node)
+	while(stack.length !== 0) {
+		node = stack.pop()
+		console.log(node.value)
+		if(node.right) stack.push(node.right)
+		if(node.left) stack.push(node.left)
+	}
+}
+
 /*排序算法 快速排序*/
 /*
 把一个数组以数组中的某个值为标记。比这个值小的放到数组的左边，比这个值得大的放到数组的右边。
