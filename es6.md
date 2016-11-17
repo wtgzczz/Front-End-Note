@@ -22,6 +22,7 @@ i;  //ReferenceError: i is not defined.
 2.### 变量的解构赋值 ###
 主要用到对象的解构赋值：
 
+
 ```
 let obj = {
     foo : 1,
