@@ -75,3 +75,47 @@
     publisher.addListener(new Subscriber());
     publisher.notify({name: 'michaelqin', ageo: 30}); // 发布一个对象到所有订阅者
     publisher.notify('2 subscribers will both perform process'); // 发布一个字符串到所有订阅者
+
+
+
+    //发布订阅模式
+    var pubsub = (function(){
+    var q = {}
+        topics = {},
+        subUid = -1;
+    //发布消息
+    q.publish = function(topic, args) {
+        if(!topics[topic]) {return;}
+        var subs = topics[topic],
+            len = subs.length;
+        while(len--) {
+            subs[len].func(topic, args);
+        }
+        return this;
+    };
+    //订阅事件
+    q.subscribe = function(topic, func) {
+        topics[topic] = topics[topic] ? topics[topic] : [];
+        var token = (++subUid).toString();
+        topics[topic].push({
+            token : token,
+            func : func
+        });
+        return token;
+    };
+    return q;
+    //取消订阅就不写了，遍历topics，然后通过保存前面返回token，删除指定元素
+})();
+//触发的事件
+var logmsg = function(topics, data) {
+    console.log("logging:" + topics + ":" + data);
+}
+//监听指定的消息'msgName'
+var sub = pubsub.subscribe('msgName', logmsg);
+//发布消息'msgName'
+pubsub.publish('msgName', 'hello world');
+//发布无人监听的消息'msgName1'
+pubsub.publish('anotherMsgName', 'me too!');
+    
+    
+    
